@@ -12,3 +12,7 @@ Source/Unit Tests/Dragging.Tests/bin/
 Source/Unit Tests/Dragging.Tests/obj/
 Source/Unit Tests/Dragging.VisualState.xml
 Source/Unit Tests/TestResult.xml
+Examples/DraggingExample/obj/
+Examples/DraggingExample/Bin/
+Examples/DraggingExample.Web/obj/
+Examples/DraggingExample.Web/bin/

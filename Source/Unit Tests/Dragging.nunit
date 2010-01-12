@@ -1,9 +1,9 @@
 ﻿<NUnitProject>
   <Settings activeconfig="Debug" />
   <Config name="Debug" binpathtype="Auto">
-    <assembly path="MvvmTests\bin\Debug\JSmith.Mvvm.Tests.MvvmTests.dll" />
+    <assembly path="Dragging.Tests\bin\Debug\JSmith.Dragging.Tests.dll" />
   </Config>
   <Config name="Release" binpathtype="Auto">
-    <assembly path="MvvmTests\bin\Release\JSmith.Mvvm.Tests.MvvmTests.dll" />
+    <assembly path="Dragging.Tests\bin\Release\JSmith.Dragging.Tests.dll" />
   </Config>
 </NUnitProject>
