@@ -2,10 +2,19 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480">
-  
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+    xmlns:t="clr-namespace:DraggingExample">
+    
     <Grid x:Name="LayoutRoot" Background="Black">
 
+        <Canvas Background="Gray" Margin="250">
+            <StackPanel Canvas.Left="500" Canvas.Top="200" Margin="270,0" Width="600" Height="200" Background="Red">
+              <Rectangle x:Name="MyRect" HorizontalAlignment="Center" Width="100" Height="80" Fill="Blue" RenderTransformOrigin="0.5,0.5" />
+            </StackPanel>
+        </Canvas>
+        
+        <t:MyContainer x:Name="DropTarget" Orientation="Horizontal" Background="Yellow" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Stretch" />
+        
     </Grid>
     
 </UserControl>

@@ -17,6 +17,7 @@ namespace DraggingExample
         public MainPage()
         {
             InitializeComponent();
+
         }
     }
 }

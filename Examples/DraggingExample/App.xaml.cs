@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using JSmith.Dragging;
 
 namespace DraggingExample
 {
@@ -26,7 +27,90 @@ namespace DraggingExample
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.RootVisual = new MainPage();
+            MainPage mp = new MainPage();
+            RootVisual = mp;
+
+            mp.MyRect.MouseLeftButtonDown += new MouseButtonEventHandler(MyEllipse_MouseLeftButtonDown);
+
+            Drop.RegisterDropTarget(mp.DropTarget);
+        }
+
+        void MyEllipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Rectangle el = new Rectangle
+            {
+                Width = 80,
+                Height = 60,
+                Opacity = 0,
+                Fill = new SolidColorBrush(Color.FromArgb(255, 0, 255, 0)),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new TransformGroup
+                {
+                    Children = new TransformCollection
+                    {
+                        new ScaleTransform(),
+                        new TranslateTransform(),
+                        new SkewTransform()
+                    }
+                }
+            };
+            el.MouseLeftButtonUp += new MouseButtonEventHandler(MyEllipse_MouseLeftButtonUp);
+            el.Dispatcher.BeginInvoke(() =>
+            {
+                el.Opacity = .5;
+            });
+
+            MainPage mp = (MainPage)RootVisual;
+            mp.LayoutRoot.Children.Add(el);
+
+            Point mouseOffset = e.GetPosition(mp.MyRect);
+            Point dragOffset = new Point((mouseOffset.X / 100) * 80, (mouseOffset.Y / 80) * 60);
+
+            Drag.Start(el, e.GetPosition(null), new Point { X = dragOffset.X, Y = dragOffset.Y });
+            
+        }
+
+        void MyEllipse_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            UIElement element = Drag.Element;
+            Drag.Stop();
+
+            TranslateTransform tt = (TranslateTransform)((TransformGroup)((UIElement)sender).RenderTransform).Children.Where(t => t is TranslateTransform).Single();
+
+            //the difference between the root (0,0) and the host object
+            //GeneralTransform gt = RootVisual.TransformToVisual(((MainPage)RootVisual).MyRect);
+            //Point p = gt.Transform(new Point());
+
+            //the difference between the host object and the dragging object
+            GeneralTransform gt = ((MainPage)RootVisual).MyRect.TransformToVisual(element);
+            Point p = gt.Transform(new Point());
+
+            DoubleAnimation da = new DoubleAnimation
+            {
+                To = tt.X + p.X,
+                Duration = TimeSpan.FromSeconds(.6),
+                EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 4 }
+            };
+
+            Storyboard.SetTarget(da, tt);
+            Storyboard.SetTargetProperty(da, new PropertyPath("X"));
+
+            DoubleAnimation da2 = new DoubleAnimation
+            {
+                To = tt.Y + p.Y,
+                Duration = TimeSpan.FromSeconds(.6),
+                EasingFunction = new PowerEase { EasingMode = EasingMode.EaseOut, Power = 4 }
+            };
+
+            Storyboard.SetTarget(da2, tt);
+            Storyboard.SetTargetProperty(da2, new PropertyPath("Y"));
+
+            Storyboard sb = new Storyboard();
+            sb.Children.Add(da);
+            sb.Children.Add(da2);
+            sb.Completed += (s, ee) => ((MainPage)RootVisual).LayoutRoot.Children.Remove(element);
+            sb.Begin();
+
         }
 
         private void Application_Exit(object sender, EventArgs e)
