@@ -245,8 +245,16 @@
     <!-- Delete our temporary files -->
     <!--<Message Text="Deleting file @(TempBuildFiles)" />
     <Delete Files="@(TempBuildFiles)" />-->
-    
 
+    <!-- Update the Revision number in our *.extmap.xml files -->
+    <ItemGroup>
+      <ExtMapFiles Include="$(BuildTempDir)/**/*.extmap.xml" />
+    </ItemGroup>
+
+    <FileUpdate Files="@(ExtMapFiles)"
+                Regex="&lt;version&gt;(.*?)&lt;/version&gt;"
+                ReplacementText="&lt;version&gt;$(Major).$(Minor).$(Build).$(Revision)&lt;/version&gt;" />
+    
     <!-- Create our versioned build directory -->
     <PropertyGroup>
       <VersionFolder>$(BuildDir)v$(Major).$(Minor).$(Build).$(Revision)\</VersionFolder>
