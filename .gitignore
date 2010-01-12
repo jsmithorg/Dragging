@@ -1,0 +1,14 @@
+*.suo
+*.user
+VersionInfo.cs
+coverage.log
+coverage.xml
+FxCopReport.xml
+TestResult.xml
+Build/
+Source/Dragging/Bin/
+Source/Dragging/obj/
+Source/Unit Tests/Dragging.Tests/bin/
+Source/Unit Tests/Dragging.Tests/obj/
+Source/Unit Tests/Dragging.VisualState.xml
+Source/Unit Tests/TestResult.xml

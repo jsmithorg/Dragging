@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dragging", "Dragging\Dragging.csproj", "{085D693F-4D39-4E9F-B29E-B8062EABD49E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{86F07B9C-3BF7-4C9E-98B3-4E4ACA6BAB29}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{470E8674-3FF3-44DB-8AF1-0ACA8E3FDD4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dragging.Tests", "Unit Tests\Dragging.Tests\Dragging.Tests.csproj", "{62D50BAF-1A24-4239-BCC6-0801A65090B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{085D693F-4D39-4E9F-B29E-B8062EABD49E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{085D693F-4D39-4E9F-B29E-B8062EABD49E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{085D693F-4D39-4E9F-B29E-B8062EABD49E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{085D693F-4D39-4E9F-B29E-B8062EABD49E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D50BAF-1A24-4239-BCC6-0801A65090B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D50BAF-1A24-4239-BCC6-0801A65090B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D50BAF-1A24-4239-BCC6-0801A65090B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D50BAF-1A24-4239-BCC6-0801A65090B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{62D50BAF-1A24-4239-BCC6-0801A65090B2} = {470E8674-3FF3-44DB-8AF1-0ACA8E3FDD4A}
+	EndGlobalSection
+EndGlobal
