@@ -75,7 +75,10 @@ namespace DraggingExample
             UIElement element = Drag.Element;
             Drag.Stop();
 
-            TranslateTransform tt = (TranslateTransform)((TransformGroup)((UIElement)sender).RenderTransform).Children.Where(t => t is TranslateTransform).Single();
+            if (((TransformGroup)element.RenderTransform).Children.Count < 1)
+                return;
+
+            TranslateTransform tt = (TranslateTransform)((TransformGroup)element.RenderTransform).Children.Where(t => t is TranslateTransform).Single();
 
             //the difference between the root (0,0) and the host object
             //GeneralTransform gt = RootVisual.TransformToVisual(((MainPage)RootVisual).MyRect);

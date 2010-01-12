@@ -16,26 +16,26 @@ namespace JSmith.Dragging
 {
     public static class Drag
     {
+        #region Fields / Properties
+
         public static UIElement Element { get; set; }
         public static Point? Offset { get; set; }
         
         private static Point? _lastMousePoint;
 
-        /*private static List<UIElement> _dropTargets;
-        public static ReadOnlyCollection<UIElement> DropTargets { get; set; }
+        #endregion
 
-        private static IEnumerable<UIElement> _lastDropTargets;
-        */
+        #region Constructor
 
         static Drag()
         {
             Offset = new Point();
 
-            //_lastDropTargets = new List<UIElement>();
-            //_dropTargets = new List<UIElement>();
-            //DropTargets = new ReadOnlyCollection<UIElement>(_dropTargets);
-
         }//end constructor
+
+        #endregion
+
+        #region Start / Stop
 
         public static void Start(UIElement element)
         {
@@ -46,7 +46,7 @@ namespace JSmith.Dragging
             Element.CaptureMouse();
             Element.MouseMove += new MouseEventHandler(UIElement_MouseMove);
 
-        }
+        }//end method
 
         public static void Start(UIElement element, Point elementOffset, Point mouseOffset)
         {
@@ -63,7 +63,7 @@ namespace JSmith.Dragging
                 SetPosition(Offset.Value);
             });
 
-        }
+        }//end method
 
         public static void Start(UIElement element, Point elementOffset)
         {
@@ -73,7 +73,6 @@ namespace JSmith.Dragging
 
         public static void Stop()
         {
-            UIElement root = Application.Current.RootVisual;
             Element.MouseMove -= new MouseEventHandler(UIElement_MouseMove);
 
             Element.ReleaseMouseCapture();
@@ -83,6 +82,10 @@ namespace JSmith.Dragging
             Element = null;
 
         }//end method
+
+        #endregion
+
+        #region Utilities
 
         public static void SetPosition(Point point)
         {
@@ -126,12 +129,6 @@ namespace JSmith.Dragging
 
         }//end method
 
-        private static void UIElement_MouseMove(object sender, MouseEventArgs e)
-        {
-            SetPosition(e.GetPosition(null));
-
-        }//end method
-
         private static TransformGroup CreateTransformGroup()
         {
             return new TransformGroup
@@ -145,6 +142,14 @@ namespace JSmith.Dragging
             };
 
         }//end method
+
+        private static void UIElement_MouseMove(object sender, MouseEventArgs e)
+        {
+            SetPosition(e.GetPosition(null));
+
+        }//end method
+
+        #endregion
 
     }//end class
 

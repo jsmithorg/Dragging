@@ -16,10 +16,16 @@ namespace JSmith.Dragging
 {
     public static class Drop
     {
+        #region Fields / Properties
+
         private static List<UIElement> _dropTargets;
         public static ReadOnlyCollection<UIElement> DropTargets { get; set; }
 
         private static IEnumerable<UIElement> _lastDropTargets;
+
+        #endregion
+
+        #region Constructor
 
         static Drop()
         {
@@ -29,11 +35,15 @@ namespace JSmith.Dragging
 
         }//end constructor
 
+        #endregion
+
         public static void RegisterDropTarget(UIElement element)
         {
             _dropTargets.Add(element);
 
         }//end method
+
+        #region Utilities
 
         internal static void NotifyIntersectingDropTargets(UIElement element, Point intersectingPoint)
         {
@@ -76,6 +86,8 @@ namespace JSmith.Dragging
             return targets;
 
         }//end method
+
+        #endregion
 
     }//end class
 
