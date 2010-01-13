@@ -22,6 +22,7 @@ namespace JSmith.Dragging
         public static Point? Offset { get; set; }
         
         private static Point? _lastMousePoint;
+        private static bool _isDragging;
 
         #endregion
 
@@ -29,6 +30,7 @@ namespace JSmith.Dragging
 
         static Drag()
         {
+            _lastMousePoint = new Point();
             Offset = new Point();
 
         }//end constructor
@@ -46,23 +48,40 @@ namespace JSmith.Dragging
             Element.CaptureMouse();
             Element.MouseMove += new MouseEventHandler(UIElement_MouseMove);
 
+            TransformGroup tg = Element.RenderTransform as TransformGroup;
+            if (tg == null)
+            {
+                tg = CreateTransformGroup();
+                Element.RenderTransform = tg;
+
+            }//end if
+
+            TranslateTransform tt = tg.Children.Where(t => t is TranslateTransform).SingleOrDefault() as TranslateTransform;
+            if (tt == null)
+                tt = new TranslateTransform();
+
+            tt.X = 0;
+            tt.Y = 0;
+
         }//end method
 
         public static void Start(UIElement element, Point elementOffset, Point mouseOffset)
         {
             Start(element);
 
-            Element.Dispatcher.BeginInvoke(() =>
-            {
-                GeneralTransform gt = Application.Current.RootVisual.TransformToVisual(Element);
-                Point offset = gt.Transform(new Point());
+            TransformGroup tg = (TransformGroup)Element.RenderTransform;
+            TranslateTransform tt = (TranslateTransform)tg.Children.Where(t => t is TranslateTransform).Single();
+            
+            GeneralTransform gt = Application.Current.RootVisual.TransformToVisual(Element);
+            Point offset = gt.Transform(new Point());
 
-                //add our element offset to our mouse offset to get our final offset
-                Offset = new Point(offset.X - mouseOffset.X, offset.Y - mouseOffset.Y);
+            //add our element offset to our mouse offset to get our final offset
+            Offset = new Point(offset.X - mouseOffset.X, offset.Y - mouseOffset.Y);
 
-                SetPosition(Offset.Value);
-            });
+            SetPosition(elementOffset);
 
+            _isDragging = true;
+            
         }//end method
 
         public static void Start(UIElement element, Point elementOffset)
@@ -89,39 +108,12 @@ namespace JSmith.Dragging
 
         public static void SetPosition(Point point)
         {
-            TransformGroup tg = Element.RenderTransform as TransformGroup;
-            if (tg == null)
-            {
-                tg = CreateTransformGroup();
-                Element.RenderTransform = tg;
-
-            }//end if
-
+            TransformGroup tg = (TransformGroup)Element.RenderTransform;
             TranslateTransform tt = (TranslateTransform)tg.Children.Where(t => t is TranslateTransform).Single();
             Point newPosition = new Point(point.X + Offset.Value.X, point.Y + Offset.Value.Y);
 
-            DoubleAnimation da = new DoubleAnimation
-            {
-                To = newPosition.X,
-                Duration = TimeSpan.FromSeconds(0)
-            };
-
-            Storyboard.SetTarget(da, tt);
-            Storyboard.SetTargetProperty(da, new PropertyPath("X"));
-
-            DoubleAnimation da2 = new DoubleAnimation
-            {
-                To = newPosition.Y,
-                Duration = TimeSpan.FromSeconds(0)
-            };
-
-            Storyboard.SetTarget(da2, tt);
-            Storyboard.SetTargetProperty(da2, new PropertyPath("Y"));
-            
-            Storyboard sb = new Storyboard();
-            sb.Children.Add(da);
-            sb.Children.Add(da2);
-            sb.Begin();
+            tt.X = newPosition.X;
+            tt.Y = newPosition.Y;
 
             Drop.NotifyIntersectingDropTargets(Element, point);
 
@@ -145,6 +137,9 @@ namespace JSmith.Dragging
 
         private static void UIElement_MouseMove(object sender, MouseEventArgs e)
         {
+            if (!_isDragging)
+                return;
+
             SetPosition(e.GetPosition(null));
 
         }//end method
