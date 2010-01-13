@@ -21,7 +21,7 @@ namespace JSmith.Dragging
         private static List<UIElement> _dropTargets;
         public static ReadOnlyCollection<UIElement> DropTargets { get; set; }
 
-        private static IEnumerable<UIElement> _lastDropTargets;
+        private static List<UIElement> _notifiedTargets;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace JSmith.Dragging
 
         static Drop()
         {
-            _lastDropTargets = new List<UIElement>();
+            _notifiedTargets = new List<UIElement>();
             _dropTargets = new List<UIElement>();
             DropTargets = new ReadOnlyCollection<UIElement>(_dropTargets);
 
@@ -48,26 +48,59 @@ namespace JSmith.Dragging
         internal static void NotifyIntersectingDropTargets(UIElement element, Point intersectingPoint)
         {
             IEnumerable<UIElement> dropTargets = GetIntersectingDropTargets(intersectingPoint);
+            List<UIElement> removableTargets = new List<UIElement>();
 
-            foreach (UIElement dropTarget in _lastDropTargets)
+            foreach (UIElement dropTarget in _notifiedTargets)
+            {
                 if (!dropTargets.Contains(dropTarget) && dropTarget is IDropTarget)
+                {
                     ((IDropTarget)dropTarget).OnDropTargetLeave(element);
 
+                    removableTargets.Add(dropTarget);
+
+                }//end if
+            
+            }//end foreach
+
+            for (int i = 0; i < removableTargets.Count; i++)
+                _notifiedTargets.Remove(removableTargets[i]);
+
             foreach (UIElement dropTarget in dropTargets)
-                if (dropTarget is IDropTarget)
+            {
+                if (dropTarget is IDropTarget && !_notifiedTargets.Contains(dropTarget))
+                {
                     ((IDropTarget)dropTarget).OnDropTargetEnter(element);
 
-            _lastDropTargets = dropTargets;
+                    _notifiedTargets.Add(dropTarget);
+
+                }//end if
+
+            }//end foreach
 
         }//end method
 
         internal static void NotifyIntersectingDropTargets(UIElement element, Point intersectingPoint, bool dropped)
         {
+            if (!dropped)
+            {
+                NotifyIntersectingDropTargets(element, intersectingPoint);
+                return;
+
+            }//end if
+
             IEnumerable<UIElement> dropTargets = GetIntersectingDropTargets(intersectingPoint);
 
             foreach (UIElement dropTarget in dropTargets)
+            {
                 if (dropTarget is IDropTarget)
+                {
                     ((IDropTarget)dropTarget).OnDragSourceDropped(element);
+
+                    _notifiedTargets.Remove(dropTarget);
+
+                }//end if
+
+            }//end foreach
 
         }//end method
 
