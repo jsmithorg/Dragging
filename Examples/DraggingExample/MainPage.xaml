@@ -9,9 +9,11 @@
 
         <Canvas Background="Gray" Margin="250">
             <StackPanel Canvas.Left="500" Canvas.Top="200" Margin="270,0" Width="600" Height="200" Background="Red">
-              <Rectangle x:Name="MyRect" HorizontalAlignment="Center" Width="100" Height="80" Fill="Blue" RenderTransformOrigin="0.5,0.5" />
+              <Rectangle x:Name="MyRect" Cursor="Hand" HorizontalAlignment="Center" Width="100" Height="80" Fill="Blue" RenderTransformOrigin="0.5,0.5" />
             </StackPanel>
         </Canvas>
+        
+        <Rectangle x:Name="MyRect2" Cursor="Hand" Margin="-100,0,0,0" HorizontalAlignment="Center" Width="100" Height="80" Fill="Blue" RenderTransformOrigin="0.5,0.5" />
         
         <t:MyContainer x:Name="DropTarget" Orientation="Horizontal" Background="Yellow" VerticalAlignment="Bottom" Height="50" HorizontalAlignment="Stretch" />
         
