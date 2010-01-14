@@ -13,6 +13,8 @@ namespace JSmith.Dragging
 {
     public interface IDropTarget
     {
+        void OnDragStarted(UIElement dragSource);
+        void OnDragStopped(UIElement dragSource);
         void OnDropTargetEnter(UIElement dragSource);
         void OnDropTargetLeave(UIElement dragSource);
         void OnDragSourceDropped(UIElement dragSource);

@@ -64,17 +64,9 @@ namespace DraggingExample
             {
                 el.Opacity = .5;
                 MainPage mp2 = (MainPage)RootVisual; 
-                //GeneralTransform gt2 = mp2.MyRect.TransformToVisual(el);
-                //Point p2 = gt2.Transform(new Point());
                 
-                //tt.X = e.GetPosition(mp2.MyRect).X + p2.X;
-                //tt.Y = e.GetPosition(mp2.MyRect).Y + p2.Y;
-
                 Point mouseOffset = e.GetPosition(mp2.MyRect);
                 Point dragOffset = new Point((mouseOffset.X / 100) * 80, (mouseOffset.Y / 80) * 60);
-
-                //GeneralTransform gt = mp2.MyRect.TransformToVisual(el);
-                //Point p = gt.Transform(mouseOffset);
 
                 Drag.Start(el, e.GetPosition(null), new Point { X = dragOffset.X, Y = dragOffset.Y });
             });
@@ -82,9 +74,6 @@ namespace DraggingExample
             MainPage mp = (MainPage)RootVisual;
             mp.LayoutRoot.Children.Add(el);
 
-            //Point mouseOffset = e.GetPosition(mp.MyRect);
-            //Point dragOffset = new Point((mouseOffset.X / 100) * 80, (mouseOffset.Y / 80) * 60);
-            //Drag.Start(el, e.GetPosition(null), new Point { X = dragOffset.X, Y = dragOffset.Y });
         }
 
         void MyEllipse_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

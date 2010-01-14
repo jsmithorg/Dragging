@@ -16,14 +16,24 @@ namespace DraggingExample
     {
         #region IDropTarget Members
 
-        public void OnDropTargetEnter(UIElement dragSource)
+        public void OnDragStarted(UIElement dragSource)
         {
             Opacity = .6;
         }
 
-        public void OnDropTargetLeave(UIElement dragSource)
+        public void OnDragStopped(UIElement dragSource)
         {
             Opacity = 1;
+        }
+
+        public void OnDropTargetEnter(UIElement dragSource)
+        {
+            dragSource.Effect = new System.Windows.Media.Effects.BlurEffect { Radius = 25 };
+        }
+
+        public void OnDropTargetLeave(UIElement dragSource)
+        {
+            dragSource.Effect = null;
         }
 
         public void OnDragSourceDropped(UIElement dragSource)
@@ -41,5 +51,6 @@ namespace DraggingExample
         }
 
         #endregion
+
     }
 }

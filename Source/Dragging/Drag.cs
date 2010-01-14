@@ -63,6 +63,8 @@ namespace JSmith.Dragging
             tt.X = 0;
             tt.Y = 0;
 
+            OnDragStarted(Element);
+
         }//end method
 
         public static void Start(UIElement element, Point elementOffset, Point mouseOffset)
@@ -97,6 +99,8 @@ namespace JSmith.Dragging
             Element.ReleaseMouseCapture();
 
             Drop.NotifyIntersectingDropTargets(Element, _lastMousePoint.Value, true);
+
+            OnDragStopped(Element);
 
             Element = null;
 
@@ -141,6 +145,22 @@ namespace JSmith.Dragging
                 return;
 
             SetPosition(e.GetPosition(null));
+
+        }//end method
+
+        internal static void OnDragStarted(UIElement element)
+        {
+            foreach (UIElement dropTarget in Drop.DropTargets)
+                if (dropTarget is IDropTarget)
+                    ((IDropTarget)dropTarget).OnDragStarted(element);
+
+        }//end method
+
+        internal static void OnDragStopped(UIElement element)
+        {
+            foreach (UIElement dropTarget in Drop.DropTargets)
+                if (dropTarget is IDropTarget)
+                    ((IDropTarget)dropTarget).OnDragStopped(element);
 
         }//end method
 
